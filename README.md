@@ -9,3 +9,11 @@
 - [Tweepy](https://github.com/tweepy/tweepy)
 - Duct Tape 
 - Appointments for COVID-19 Vaccine Website: https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking
+
+License
+--------
+
+     Copyright (c) 2021 Arlin Schaffel
+
+     Licensed under the MIT License, available here:
+     https://github.com/FeXd/saskvaccine/blob/main/LICENSE.md
