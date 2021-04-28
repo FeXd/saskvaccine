@@ -99,8 +99,8 @@ def should_tweet(booking_info, previous, current_time):
             return False
 
 
-def log(text):
-    print(f"{datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%SZ')}: {text}")
+def log(text, more_text=''):
+    print(f"{datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%SZ')}: {text} {more_text}")
 
 
 if __name__ == '__main__':
