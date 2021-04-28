@@ -28,4 +28,4 @@ Please feel free to provide feedback through any of the below methods:
      Copyright (c) 2021 Arlin Schaffel
 
      Licensed under the MIT License, available here:
-     [https://github.com/FeXd/saskvaccine/blob/main/LICENSE.md](https://github.com/FeXd/saskvaccine/blob/main/LICENSE.md)
+     https://github.com/FeXd/saskvaccine/blob/main/LICENSE.md
