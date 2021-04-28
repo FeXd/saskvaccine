@@ -12,11 +12,15 @@ _The Saskatchewan Health Authority_ does a fairly good job updating everyone via
 This bot is dedicated to just that, so that people can check [@saskvaccine](https://twitter.com/saskvaccine) quickly and easily, rather than feeling the need to refresh the [Appointments for COVID-19 Vaccine Website](https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking) over and over again.
 
 ## 💻 Dependencies & Installation
-- Python 3.x
-     - `pip install -r requirements.txt`
+- Python 3.x with [pip](https://pypi.org/project/pip/)
+     - run `pip install -r requirements.txt`
 - Twitter Authentication Tokens via a [Twitter Developer Account](https://developer.twitter.com/)
      - Create a `.env` file with these tokens in the root of the directory
      - ([Tweepy](https://www.tweepy.org/) has good documentation on retrieving those [here](https://docs.tweepy.org/en/latest/auth_tutorial.html))
+- Run the test suite (don't worry it won't Tweet)
+     - run `python main_test.py`
+- Run Sask Vaccine main script
+     - run `python main.py`
 
 ## 🐞 Bugs, Questions, & Comments
 Please feel free to provide feedback through any of the below methods:
