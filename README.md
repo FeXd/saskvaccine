@@ -1,6 +1,6 @@
 # Sask Vaccine
 🤖 A bot to track COVID-19 vaccine age limit requirement in Saskatchewan.  
-⏰ Tweets every 30-60 minutes or so.  
+⏰ Tweets when info changes and once per day around 8 am.
 💻 Maintained by [@FeXd](https://github.com/FeXd).  
 🐣 https://twitter.com/saskvaccine  
 
