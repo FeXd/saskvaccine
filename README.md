@@ -1,6 +1,6 @@
 # Sask Vaccine
-🤖 Bot to track COVID-19 vaccine age requirement in #SK.
-⏰ Tweets when info changes & every morning around 8 am.
+🤖 Bot to track COVID-19 vaccine age requirement in #SK.  
+⏰ Tweets when info changes & every morning around 8 am.  
 💻 Maintained by [@FeXd](https://github.com/FeXd).  
 🐣 https://twitter.com/saskvaccine  
 
