@@ -5,7 +5,7 @@
 🐣 https://twitter.com/saskvaccine  
 
 ## ⁉️ How and Why
-**Sask Vaccine** is a simple Python3 script that uses [urllib](https://docs.python.org/3/library/urllib.html) to pulll information from the [Appointments for COVID-19 Vaccine Website](https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking) and [Tweepy](https://github.com/tweepy/tweepy) to tweet updates to [@saskvaccine](https://twitter.com/saskvaccine).
+**Sask Vaccine** is a simple Python3 script that uses [urllib](https://docs.python.org/3/library/urllib.html) to pull information from the [Appointments for COVID-19 Vaccine Website](https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking) and [Tweepy](https://github.com/tweepy/tweepy) to tweet updates to [@saskvaccine](https://twitter.com/saskvaccine).
 
 _The Saskatchewan Health Authority_ does a fairly good job updating everyone via their [website](https://www.saskhealthauthority.ca/) and [twitter](https://twitter.com/SaskHealth). But many people in Saskatchewan (myself included) are just looking for one thing... **when can we sign up to get vaccinated!?**  
 
