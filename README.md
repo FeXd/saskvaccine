@@ -1,6 +1,6 @@
 # Sask Vaccine
-🤖 A bot to track COVID-19 vaccine age limit requirement in Saskatchewan.  
-⏰ Tweets when info changes and once per day around 8 am.  
+🤖 Bot to track COVID-19 vaccine age requirement in #SK.
+⏰ Tweets when info changes & every morning around 8 am.
 💻 Maintained by [@FeXd](https://github.com/FeXd).  
 🐣 https://twitter.com/saskvaccine  
 
@@ -29,7 +29,7 @@ Please feel free to provide feedback through any of the below methods:
 - email <arlin@fexd.com>  
 
 ## 📜 License
-     Copyright (c) 2021 Arlin Schaffel
+Copyright (c) 2021 Arlin Schaffel
 
-     Licensed under the MIT License, available here:
-     https://github.com/FeXd/saskvaccine/blob/main/LICENSE.md
+Licensed under the MIT License, available here:
+https://github.com/FeXd/saskvaccine/blob/main/LICENSE.md
