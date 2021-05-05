@@ -89,8 +89,8 @@ def should_tweet(booking_info, previous, current_time):
         if booking_info != previous['data']:
             log(f'should_tweet: data has changed, we should tweet: {booking_info}')
             return True
-        # is it after 8 AM CST and we haven't tweeted today?
-        elif current_time.hour >= 8 and previous_time.day != current_time.day:
+        # is it after 8:01 AM CST and we haven't tweeted today?
+        elif current_time.hour >= 8 and current_time.minute >= 1 and previous_time.day != current_time.day:
             log(f'should_tweet: later than 8 and have not tweeted today, we should tweet: {booking_info}')
             return True
         # we've already tweeted this info

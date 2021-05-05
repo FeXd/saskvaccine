@@ -98,6 +98,13 @@ def test_should_tweet():
             'expect': True,
         },
         {
+            'id': 'same data, new day, exactly 8 am',
+            'booking_info': 'Booking information is here 123',
+            'previous': {'data': 'Booking information is here 123', 'time': '2021-04-28T14:33:50Z'},
+            'current_time': '2021-05-30T08:00:00Z',
+            'expect': False,
+        },
+        {
             'id': 'same data, new day, before 8 am',
             'booking_info': 'Booking information is here 123',
             'previous': {'data': 'Booking information is here 123', 'time': '2021-04-28T14:33:50Z'},
