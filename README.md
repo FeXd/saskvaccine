@@ -28,6 +28,14 @@ Please feel free to provide feedback through any of the below methods:
 - tweet [@FeXd](https://twitter.com/fexd) or [@saskvaccine](https://twitter.com/saskvaccine)  
 - email <arlin@fexd.com>  
 
+## 💡 Official Government Websites
+This tool has been created independently and is not associated with the Government of Saskatchewan or the Saskatchewan Health Authority. Below are links to official websites for more information about COVID-19, vaccination, and more.
+- [https://stickittocovid.ca](https://stickittocovid.ca)
+- [https://saskatchewan.ca/covid-19](https://saskatchewan.ca/covid-19)
+- [https://saskhealthauthority.ca/](https://saskhealthauthority.ca/)
+- [https://twitter.com/SKGov](https://twitter.com/SKGov)
+- [https://twitter.com/SaskHealth](https://twitter.com/SaskHealth)
+
 ## 📜 License
 Copyright (c) 2021 Arlin Schaffel
 
