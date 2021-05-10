@@ -36,8 +36,9 @@ Please feel free to provide feedback through any of the below methods:
 
 ## 💡 Official Government Websites
 This tool has been created independently and is not associated with the _Government of Saskatchewan_ or the _Saskatchewan Health Authority_. Below are links to official websites for more information about COVID-19, vaccination, and more.
-- [https://stickittocovid.ca](https://stickittocovid.ca)
+- [http://stickittocovid.ca](http://stickittocovid.ca)
 - [https://saskatchewan.ca/covid-19](https://saskatchewan.ca/covid-19)
+- [https://saskatchewan.ca/covid19-vaccine](https://saskatchewan.ca/covid19-vaccine)
 - [https://saskhealthauthority.ca/](https://saskhealthauthority.ca/)
 - [https://twitter.com/SKGov](https://twitter.com/SKGov)
 - [https://twitter.com/SaskHealth](https://twitter.com/SaskHealth)
