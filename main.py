@@ -157,9 +157,10 @@ def should_retweet(tweet_text):
         'eligibility for immunization',
         'eligibility in the provincial immunization program',
         'eligibility in the provincial age-based immunization program',
+        'eligibility criteria',
     ]
     for eligibility_string in eligibility_strings:
-        if tweet_text.find(eligibility_string) >= 0:
+        if tweet_text.lower().find(eligibility_string) >= 0:
             log('should_retweet: matches found, we should retweet', tweet_text)
             return True
     log('should_retweet: no matching strings found', tweet_text)

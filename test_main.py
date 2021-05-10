@@ -142,6 +142,7 @@ def test_should_retweet():
         {'expect': False, 'tweet': 'Starting TOMORROW, Saturday, May 1 @Prairieland COVID-19 vaccine drive-thru (entry off St. Henry Ave) from 8:30 a.m. to 8:00 p.m. for anyone who meets current vaccine eligibility. The drive-thru will be open through the weekend and into next week as vaccine supplies allow.'},
         {'expect': True, 'tweet': 'Effective, 8 a.m., Saturday, May 8, 2021, eligibility in the provincial age-based immunization program moves to 32 years of age and older. \n\nEffective, 8 a.m., Monday, May 10, 2021, eligibility in the provincial age-based immunization program moves to 29 years of age and older.'},
         {'expect': True, 'tweet': 'Residents ages 32+ are now eligible to book their #COVID19SK shot by visiting http://StickItToCOVID.ca or calling 1-833-SASK-VAX (1-833-727-5829)\n\nResidents ages 18-34 in the Northern Admin District are now eligible to book their shot by calling 1-833-SASK-VAX (1-833-727-5829)'},
+        {'expect': True, 'tweet': 'COVID-19 Immunization Update effective May 11\n\nEligibility criteria remains unchanged at age 29 and older. It remains 18 and older in the Northern Saskatchewan Administration District.\n\nFor more information: https://saskhealthauthority.ca/news/releases/Pages/2021/May/COVID-19-Immunization-Update-effective-May-11.aspx'},
     ]
 
     for i in inputs:
