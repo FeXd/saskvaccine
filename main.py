@@ -133,7 +133,7 @@ def check_tweets():
         try:
             api = tweepy.API(auth)
             since_id = get_last_tweet_id(account['name'])
-            timeline = api.user_timeline(user_id=account['id'], since_id=int(since_id), include_rts=False, exclude_replies=True, trim_user=True, tweet_mode='extended')
+            timeline = api.user_timeline(user_id=account['id'], since_id=int(since_id), include_rts=False, exclude_replies=False, trim_user=True, tweet_mode='extended')
             tweet_ids = []
             for t in timeline:
                 tweet_ids.append(t.id)
@@ -156,9 +156,11 @@ def should_retweet(tweet_text):
         'immunization age eligibility',
         'eligibility for immunization',
         'eligibility in the provincial immunization program',
+        'eligibility in the provincial age-based immunization program',
+        'eligibility criteria',
     ]
     for eligibility_string in eligibility_strings:
-        if tweet_text.find(eligibility_string) >= 0:
+        if tweet_text.lower().find(eligibility_string) >= 0:
             log('should_retweet: matches found, we should retweet', tweet_text)
             return True
     log('should_retweet: no matching strings found', tweet_text)
