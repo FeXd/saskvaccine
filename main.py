@@ -151,13 +151,16 @@ def check_tweets():
 def should_retweet(tweet_text):
     log('should_retweet: should we retweet?')
     eligibility_strings = [
-        'are now eligible to book',
+        'are now eligible',
         'eligibility is now',
         'immunization age eligibility',
         'eligibility for immunization',
-        'eligibility in the provincial immunization program',
-        'eligibility in the provincial age-based immunization program',
+        'eligibility in the immunization',
+        'eligibility in the provincial immunization',
+        'eligibility in the provincial age-based immunization',
         'eligibility criteria',
+        'eligibility for covid-19',
+        'eligibility for vaccination',
     ]
     for eligibility_string in eligibility_strings:
         if tweet_text.lower().find(eligibility_string) >= 0:
