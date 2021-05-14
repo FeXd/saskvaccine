@@ -143,6 +143,7 @@ def test_should_retweet():
         {'expect': True, 'tweet': 'Effective, 8 a.m., Saturday, May 8, 2021, eligibility in the provincial age-based immunization program moves to 32 years of age and older. \n\nEffective, 8 a.m., Monday, May 10, 2021, eligibility in the provincial age-based immunization program moves to 29 years of age and older.'},
         {'expect': True, 'tweet': 'Residents ages 32+ are now eligible to book their #COVID19SK shot by visiting http://StickItToCOVID.ca or calling 1-833-SASK-VAX (1-833-727-5829)\n\nResidents ages 18-34 in the Northern Admin District are now eligible to book their shot by calling 1-833-SASK-VAX (1-833-727-5829)'},
         {'expect': True, 'tweet': 'COVID-19 Immunization Update effective May 11\n\nEligibility criteria remains unchanged at age 29 and older. It remains 18 and older in the Northern Saskatchewan Administration District.\n\nFor more information: https://saskhealthauthority.ca/news/releases/Pages/2021/May/COVID-19-Immunization-Update-effective-May-11.aspx'},
+        {'expect': True, 'tweet': 'ICYMI: Effective at 8 a.m. May 14, eligibility for Covid-19 vaccinations moves to ages 23 and older and 18 and older in the Northern Saskatchewan Administration District. Read the rest of the news release for complete details: https://saskhealthauthority.ca/news/releases/Pages/2021/May/COVID-19-Immunization-Update-effective-May-14.aspx'},
     ]
 
     for i in inputs:
