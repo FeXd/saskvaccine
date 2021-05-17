@@ -150,11 +150,12 @@ def test_should_retweet():
         {'expect': False, 'tweet': "Saskatchewan actor Tatiana Maslany encourages everyone to get their #COVID19SK vaccine.\n\nVisit http://saskatchewan.ca/COVID19-vaccine to learn more about Saskatchewan's Vaccine Delivery Plan. \n\n#GetVaccinatedSK"},
         {'expect': False, 'tweet': "Former Humboldt Broncos player @KalebDahlgren encourages everyone to get their #COVID19SK vaccine.\n\nVisit http://saskatchewan.ca/COVID19-vaccine to learn more about Saskatchewan's Vaccine Delivery Plan. \n\n#GetVaccinatedSK"},
         {'expect': False, 'tweet': 'The Regina Drive-Thru clinic has used its’ supply of vaccine and has closed for the day. Those in line will be vaccinated. The clinic will open again Wednesday, May 19. For a list of drop-in clinics & wait times, please visit https://saskhealthauthority.ca/news/service-alerts-emergency-events/Pages/COVID-19-Vaccine-Drive-Thru-Wait-Times.aspx'},
+        {'expect': False, 'tweet': 'Walk-in COVID-19 immunizations are available today in Rosthern at the\n\nCommunity Multipurpose Centre from 12:00 p.m. – 2:30 p.m. Must meet current age eligibility. Health card and ID required.”'},
     ]
 
     for i in inputs:
         result = main.should_retweet(i['tweet'])
-        assert result == i['expect'], f'should_retweet() failed, {i["tweet"]} should have been {i["expect"]}'
+        assert result == i['expect'], f'should_retweet() failed, should have been {i["expect"]}, tweet: {i["tweet"]} '
 
 
 if __name__ == '__main__':

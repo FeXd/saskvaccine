@@ -150,23 +150,26 @@ def check_tweets():
 
 def should_retweet(tweet_text):
     log('should_retweet: should we retweet?')
-    eligibility_strings = [
-        'are now eligible',
-        'are eligible provincially',
-        'eligibility is now',
-        'immunization age eligibility',
-        'eligibility for immunization',
-        'eligibility in the immunization',
-        'eligibility in the provincial immunization',
-        'eligibility in the provincial age-based immunization',
-        'eligibility criteria',
-        'eligibility for covid-19',
-        'eligibility for vaccination',
+    must_have_all = ['eligib']
+    should_have_one = [
+        'are now',
+        'is now',
+        'moves to',
+        'as of',
+        'remains at',
+        'remains unchanged',
     ]
-    for eligibility_string in eligibility_strings:
-        if tweet_text.lower().find(eligibility_string) >= 0:
+
+    for must_have in must_have_all:
+        if tweet_text.lower().find(must_have) < 0:
+            log('should_retweet: no matching strings found', tweet_text)
+            return False
+
+    for should_have in should_have_one:
+        if tweet_text.lower().find(should_have) >= 0:
             log('should_retweet: matches found, we should retweet', tweet_text)
             return True
+
     log('should_retweet: no matching strings found', tweet_text)
     return False
 
