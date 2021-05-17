@@ -152,6 +152,7 @@ def should_retweet(tweet_text):
     log('should_retweet: should we retweet?')
     eligibility_strings = [
         'are now eligible',
+        'are eligible provincially',
         'eligibility is now',
         'immunization age eligibility',
         'eligibility for immunization',
