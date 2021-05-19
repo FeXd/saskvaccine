@@ -158,6 +158,7 @@ def should_retweet(tweet_text):
         'as of',
         'remains at',
         'remains unchanged',
+        'book',
     ]
 
     for must_have in must_have_all:

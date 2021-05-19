@@ -49,6 +49,8 @@ def test_get_current_booking():
          'booking': 'Currently Booking: Citizens 44 years and older (born on this day in 1977 or earlier) provincially (online and call centre booking available)'},
         {'file': 'test_data/20210428vaccine.html',
          'booking': 'Currently Booking: Residents 42 years and older (born on this day in 1979 or earlier) provincially (online and call centre booking available)'},
+        {'file': 'test_data/20210519vaccine.html',
+         'booking': 'Currently Booking: 1st Dose: Residents 16 years and older (born on this day in 2005 or earlier) provincially (online and call centre booking available). '},
     ]
 
     for current_booking in test_current_booking:
@@ -151,6 +153,9 @@ def test_should_retweet():
         {'expect': False, 'tweet': "Former Humboldt Broncos player @KalebDahlgren encourages everyone to get their #COVID19SK vaccine.\n\nVisit http://saskatchewan.ca/COVID19-vaccine to learn more about Saskatchewan's Vaccine Delivery Plan. \n\n#GetVaccinatedSK"},
         {'expect': False, 'tweet': 'The Regina Drive-Thru clinic has used its’ supply of vaccine and has closed for the day. Those in line will be vaccinated. The clinic will open again Wednesday, May 19. For a list of drop-in clinics & wait times, please visit https://saskhealthauthority.ca/news/service-alerts-emergency-events/Pages/COVID-19-Vaccine-Drive-Thru-Wait-Times.aspx'},
         {'expect': False, 'tweet': 'Walk-in COVID-19 immunizations are available today in Rosthern at the\n\nCommunity Multipurpose Centre from 12:00 p.m. – 2:30 p.m. Must meet current age eligibility. Health card and ID required.”'},
+        {'expect': False, 'tweet': 'Margaret Hicks received her 2nd dose of the #COVID19sk vaccination this morning at the Glencairn Neighbourhood Centre in #Regina & got her "I Stuck it to COVID" sticker. Yay Margaret! Party popper For current eligibility, visit http://saskatchewan.ca/covid19-vaccine. #StickItToCOVID'},
+        {'expect': True, 'tweet': '#COVID19SK vaccine eligibility:\n\n1st dose: residents 16+\n\n2nd doses: residents 85+ or anyone who received their first dose before February 15, 2021\n\nBook online: http://StickItToCOVID.ca\n\nOr by phone: 1-833-SASK-VAX (1-833-727-5829)'},
+        {'expect': False, 'tweet': '#SaskAg, Your mental and physical health are important too. To stay safe, ensure you take frequent breaks, eat healthy and know your limits. For more information, please visit http://saskatchewan.ca/farmsafety. #Farmsafety'},
     ]
 
     for i in inputs:
