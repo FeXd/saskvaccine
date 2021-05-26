@@ -29,31 +29,32 @@ def get_html(url):
         return None
 
 
-def get_current_booking(haystack):
-    header = haystack.find('<h2 id="check-your-eligibility">1. Check Your Eligibility</h2>')
-    if header == -1:
-        log('Error: get_current_booking: header not found, did page html format change?')
+def get_string_between(haystack, start, end, trim):
+    string_start = haystack.find(start)
+    if string_start == -1:
+        log('Error: get_current_booking: start not found, did page html format change?')
         return None
     else:
-        header_to_end = haystack[header:]
-        start = '<blockquote><strong>'
-        end = '</strong></blockquote>'
-        booking_start = header_to_end.find(start)
-        booking_end = header_to_end.find(end)
-        if booking_start == -1 or booking_end == -1:
+        smaller_haystack = haystack[string_start:]
+        string_end = smaller_haystack.find(end)
+        if string_start == -1 or string_end == -1:
             log('Error: get_current_booking: booking not found, did page html format change?')
             return None
         else:
-            booking_text = header_to_end[booking_start + len(start):booking_end]
-            return booking_text
+            string_return = smaller_haystack[len(start) - trim:string_end]
+            return string_return
 
 
-def compose_tweet(content, tweet_time, website=''):
-    hashtags = '#sk #sask #GetVaccinatedSK'
+def compose_tweet(first, second, tweet_time, website=''):
+    hashtags = '\n\n#sk #sask #GetVaccinatedSK'
     the_time = tweet_time.strftime('(%m/%d %I:%M %p CST)')
+    if second is None or second == '':
+        second = ''
+    else:
+        second = f'{second}\n\n'
     if len(website) > 0:
         website = f'c/o: {website}'
-    return f'{content} {website} {hashtags} {the_time}'
+    return f'{first}\n\n{second}{website}\n\n{hashtags} {the_time}'
 
 
 def get_previous(file_name='previous.json'):
@@ -74,6 +75,7 @@ def set_previous(data, file_name='previous.json'):
     file.write(json.dumps(write))
     file.close()
     log(f'{file_name} updated: {write}')
+
 
 def get_last_tweet_id(account_name):
     # Default tweet_id of SaskHealth tweet from May 5, 2021
@@ -183,10 +185,11 @@ if __name__ == '__main__':
         vaccine_site = "https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility"
         html = get_html(vaccine_site)
         if html is not None:
-            current_booking = get_current_booking(html)
+            current_booking = get_string_between(html, '<blockquote><strong>Currently Booking:', '</strong></blockquote>', 20)
+            second_booking = get_string_between(html, '<h2>2nd Doses Eligibility:', '</h2>', 4)
             if current_booking is not None:
                 if should_tweet(current_booking, get_previous(), datetime.datetime.now()):
-                    tweet = compose_tweet(current_booking, datetime.datetime.now(), vaccine_site)
+                    tweet = compose_tweet(current_booking, second_booking, datetime.datetime.now(), vaccine_site)
                     if tweet is not None:
                         update_status(tweet)
                         set_previous(current_booking)

@@ -21,10 +21,11 @@ def test_get_html():
         assert main.get_html(failure_url) is None, f'get_html({failure_url}) should return None'
 
 
-def test_get_current_booking():
-    test_current_booking = [
-        {'file': 'test_data/20210310vaccine.html',
-         'booking': 'Online and telephone bookings open at 8 a.m. on March 11th for citizens 85 years and older (born on this day or earlier, 1935)'},
+def test_get_string_between():
+    start = '<blockquote><strong>Currently Booking:'
+    end = '</strong></blockquote>'
+    trim = 18
+    tests = [
         {'file': 'test_data/20210311vaccine.html',
          'booking': 'Currently Booking: Citizens 85 years and older (born on this day or earlier, 1936)'},
         {'file': 'test_data/20210313vaccine.html',
@@ -51,14 +52,16 @@ def test_get_current_booking():
          'booking': 'Currently Booking: Residents 42 years and older (born on this day in 1979 or earlier) provincially (online and call centre booking available)'},
         {'file': 'test_data/20210519vaccine.html',
          'booking': 'Currently Booking: 1st Dose: Residents 16 years and older (born on this day in 2005 or earlier) provincially (online and call centre booking available). '},
+        # {'file': 'test_data/20210525vaccine.html',
+        #  'booking': 'testing'},
     ]
 
-    for current_booking in test_current_booking:
-        file = open(current_booking['file'], "r")
+    for test in tests:
+        file = open(test['file'], "r")
         read = file.read().strip()
         file.close()
-        result = main.get_current_booking(read)
-        assert result == current_booking['booking'], f'get_current_booking() failed on {current_booking["file"]}, "{result}" does not equal "{current_booking["booking"]}"'
+        result = main.get_string_between(read, start, end, trim)
+        assert result == test['booking'], f'get_string_between() failed on {test["file"]}, "{result}" does not equal "{test["booking"]}"'
 
 
 def test_compose_tweet():
@@ -66,13 +69,25 @@ def test_compose_tweet():
     tweet_time = the_time.strftime('(%m/%d %I:%M %p CST)')
 
     tweets = [
-        {'text': 'hello world',
+        {'first': 'hello',
+         'second': 'world',
          'website': 'google.com',
-         'expect': 'hello world c/o: google.com #sk #sask #GetVaccinatedSK ' + tweet_time},
+         'expect': 'hello\n\nworld\n\nc/o: google.com\n\n#sk #sask #GetVaccinatedSK ' + tweet_time
+         },
+        {'first': 'foo',
+         'second': None,
+         'website': 'google.com',
+         'expect': 'foo\n\nc/o: google.com\n\n#sk #sask #GetVaccinatedSK ' + tweet_time
+         },
+        {'first': 'third try',
+         'second': '',
+         'website': 'google.com',
+         'expect': 'third try\n\nc/o: google.com\n\n#sk #sask #GetVaccinatedSK ' + tweet_time
+         },
     ]
 
     for tweet in tweets:
-        result = main.compose_tweet(tweet['text'], the_time, tweet['website'])
+        result = main.compose_tweet(tweet['first'], tweet['second'], the_time, tweet['website'])
         assert result == tweet['expect'], f'compose_tweet() failed, {result} is not {tweet["expect"]}'
 
 
@@ -166,7 +181,7 @@ def test_should_retweet():
 if __name__ == '__main__':
     print('Running Tests')
     test_get_html()
-    test_get_current_booking()
+    test_get_string_between()
     test_compose_tweet()
     test_should_tweet()
     test_should_retweet()
