@@ -24,7 +24,7 @@ def test_get_html():
 def test_get_string_between():
     start = '<blockquote><strong>Currently Booking:'
     end = '</strong></blockquote>'
-    trim = 18
+    trim = 20
     tests = [
         {'file': 'test_data/20210311vaccine.html',
          'booking': 'Currently Booking: Citizens 85 years and older (born on this day or earlier, 1936)'},
@@ -66,23 +66,26 @@ def test_get_string_between():
 
 def test_compose_tweet():
     the_time = datetime.datetime.now()
-    tweet_time = the_time.strftime('(%m/%d %I:%M %p CST)')
+    tweet_time = the_time.strftime('%m/%d %I:%M %p CST')
 
     tweets = [
+        # normal tweet everything is short and fits
         {'first': 'hello',
          'second': 'world',
          'website': 'google.com',
-         'expect': 'hello\n\nworld\n\nc/o: google.com\n\n#sk #sask #GetVaccinatedSK ' + tweet_time
+         'expect': f'hello\n\nworld\n\n#sk #sask #GetVaccinatedSK {tweet_time} google.com'
          },
+        # no second string passed in
         {'first': 'foo',
          'second': None,
          'website': 'google.com',
-         'expect': 'foo\n\nc/o: google.com\n\n#sk #sask #GetVaccinatedSK ' + tweet_time
+         'expect': f'foo\n\n#sk #sask #GetVaccinatedSK {tweet_time} google.com'
          },
-        {'first': 'third try',
+        # blank second string passed in
+        {'first': 'empty second',
          'second': '',
          'website': 'google.com',
-         'expect': 'third try\n\nc/o: google.com\n\n#sk #sask #GetVaccinatedSK ' + tweet_time
+         'expect': f'empty second\n\n#sk #sask #GetVaccinatedSK {tweet_time} google.com'
          },
     ]
 

@@ -48,7 +48,7 @@ def get_string_between(haystack, start, end, trim):
 def compose_tweet(first, second, tweet_time, website=''):
     # compose tweet text and ensure it is under 280 characters
     # note that twitter changes URLs to make them 26 char count always
-    # also we need to use a time stamp, so we don't get flagged a duplicte tweet
+    # also we need to use a time stamp, so we don't get flagged a duplicate tweet
 
     hashtags = '#sk #sask #GetVaccinatedSK'
     the_time = tweet_time.strftime('%m/%d %I:%M %p CST')
