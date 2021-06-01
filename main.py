@@ -41,20 +41,50 @@ def get_string_between(haystack, start, end, trim):
             log('Error: get_current_booking: booking not found, did page html format change?')
             return None
         else:
-            string_return = smaller_haystack[len(start) - trim:string_end]
+            print('smaller_haystack:',smaller_haystack)
+            print('start:',start)
+            print('trim:',trim)
+            string_return = smaller_haystack[trim:string_end]
+            print('string_return:', string_return)
             return string_return
 
 
 def compose_tweet(first, second, tweet_time, website=''):
-    hashtags = '\n\n#sk #sask #GetVaccinatedSK'
-    the_time = tweet_time.strftime('(%m/%d %I:%M %p CST)')
+    # compose tweet text and ensure it is under 280 characters
+    # note that twitter changes URLs to make them 26 char count always
+    # also we need to use a time stamp, so we don't get flagged a duplicte tweet
+
+    hashtags = '#sk #sask #GetVaccinatedSK'
+    the_time = tweet_time.strftime('%m/%d %I:%M %p CST')
+    first_shorter = first.replace('(online and call centre booking available).', '')
+
+    # check if second has content and add line breaks
     if second is None or second == '':
         second = ''
     else:
-        second = f'{second}\n\n'
-    if len(website) > 0:
-        website = f'c/o: {website}'
-    return f'{first}\n\n{second}{website}\n\n{hashtags} {the_time}'
+        second = f'\n\n{second}'
+
+    # TODO: simplify and refactor below nested conditionals
+    tweet_string = f'{first}{second}\n\n{hashtags} {the_time}'
+    #  253 = 280 - 1 space - 26 char URL
+    if len(tweet_string) > 253:
+        # try to use first_shorter
+        tweet_string = f'{first_shorter}{second}\n\n{hashtags} {the_time}'
+        if len(tweet_string) > 253:
+            # try with first_shorter and no hashtags
+            tweet_string = f'{first_shorter}{second}\n\n{the_time}'
+            if len(tweet_string) > 253:
+                # try with first and drop second entirely
+                tweet_string = f'{first}\n\n{hashtags} {the_time}'
+                if len(tweet_string) > 253:
+                    # try with first and drop second and hashtags
+                    tweet_string = f'{first}\n\n{the_time}'
+                    if len(tweet_string) > 253:
+                        # last try - only first_shorter
+                        tweet_string = f'{first_shorter}\n\n{the_time}'
+
+    tweet_string += ' ' + website
+    return tweet_string
 
 
 def get_previous(file_name='previous.json'):
@@ -182,17 +212,18 @@ if __name__ == '__main__':
     load_dotenv()
     while True:
         log('Checking for updates...')
-        vaccine_site = "https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility"
-        html = get_html(vaccine_site)
+        vaccine_website = "https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility"
+        html = get_html(vaccine_website)
         if html is not None:
             current_booking = get_string_between(html, '<blockquote><strong>Currently Booking:', '</strong></blockquote>', 20)
             second_booking = get_string_between(html, '<h2>2nd Doses Eligibility:', '</h2>', 4)
             if current_booking is not None:
                 if should_tweet(current_booking, get_previous(), datetime.datetime.now()):
-                    tweet = compose_tweet(current_booking, second_booking, datetime.datetime.now(), vaccine_site)
+                    tweet = compose_tweet(current_booking, second_booking, datetime.datetime.now(), vaccine_website)
                     if tweet is not None:
-                        update_status(tweet)
-                        set_previous(current_booking)
+                        print(tweet)
+                        # update_status(tweet)
+                        # set_previous(current_booking)
                     else:
                         log('Error: main: tweet is None')
                 else:
