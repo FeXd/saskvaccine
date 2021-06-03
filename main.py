@@ -150,7 +150,7 @@ def check_tweets():
 
 def should_retweet(tweet_text):
     log('should_retweet: should we retweet?')
-    must_have_all = ['eligib']
+    must_have_one = ['eligib', 'immuniz']
     should_have_one = [
         'are now',
         'is now',
@@ -158,18 +158,16 @@ def should_retweet(tweet_text):
         'as of',
         'remains at',
         'remains unchanged',
-        'book',
+        'first dose',
+        'second dose',
     ]
 
-    for must_have in must_have_all:
-        if tweet_text.lower().find(must_have) < 0:
-            log('should_retweet: no matching strings found', tweet_text)
-            return False
-
-    for should_have in should_have_one:
-        if tweet_text.lower().find(should_have) >= 0:
-            log('should_retweet: matches found, we should retweet', tweet_text)
-            return True
+    for must_have in must_have_one:
+        if tweet_text.lower().find(must_have) > 0:
+            for should_have in should_have_one:
+                if tweet_text.lower().find(should_have) >= 0:
+                    log(f'should_retweet: matches found {should_have}, we should retweet', tweet_text)
+                    return True
 
     log('should_retweet: no matching strings found', tweet_text)
     return False
