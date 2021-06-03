@@ -21,10 +21,11 @@ def test_get_html():
         assert main.get_html(failure_url) is None, f'get_html({failure_url}) should return None'
 
 
-def test_get_current_booking():
-    test_current_booking = [
-        {'file': 'test_data/20210310vaccine.html',
-         'booking': 'Online and telephone bookings open at 8 a.m. on March 11th for citizens 85 years and older (born on this day or earlier, 1935)'},
+def test_get_string_between():
+    start = '<blockquote><strong>Currently Booking:'
+    end = '</strong></blockquote>'
+    trim = 20
+    tests = [
         {'file': 'test_data/20210311vaccine.html',
          'booking': 'Currently Booking: Citizens 85 years and older (born on this day or earlier, 1936)'},
         {'file': 'test_data/20210313vaccine.html',
@@ -51,28 +52,87 @@ def test_get_current_booking():
          'booking': 'Currently Booking: Residents 42 years and older (born on this day in 1979 or earlier) provincially (online and call centre booking available)'},
         {'file': 'test_data/20210519vaccine.html',
          'booking': 'Currently Booking: 1st Dose: Residents 16 years and older (born on this day in 2005 or earlier) provincially (online and call centre booking available). '},
+        # {'file': 'test_data/20210525vaccine.html',
+        #  'booking': 'testing'},
     ]
 
-    for current_booking in test_current_booking:
-        file = open(current_booking['file'], "r")
+    for test in tests:
+        file = open(test['file'], "r")
         read = file.read().strip()
         file.close()
-        result = main.get_current_booking(read)
-        assert result == current_booking['booking'], f'get_current_booking() failed on {current_booking["file"]}, "{result}" does not equal "{current_booking["booking"]}"'
+        result = main.get_string_between(read, start, end, trim)
+        assert result == test['booking'], f'get_string_between() failed on {test["file"]}, "{result}" does not equal "{test["booking"]}"'
 
 
 def test_compose_tweet():
     the_time = datetime.datetime.now()
-    tweet_time = the_time.strftime('(%m/%d %I:%M %p CST)')
+    tweet_time = the_time.strftime('%m/%d %I:%M %p CST')
 
     tweets = [
-        {'text': 'hello world',
+        # normal tweet everything is short and fits
+        {'first': 'hello',
+         'second': 'world',
          'website': 'google.com',
-         'expect': 'hello world c/o: google.com #sk #sask #GetVaccinatedSK ' + tweet_time},
+         'expect': f'hello\n\nworld\n\n#sk #sask #GetVaccinatedSK {tweet_time} google.com'
+         },
+        # no second string passed in
+        {'first': 'foo',
+         'second': None,
+         'website': 'google.com',
+         'expect': f'foo\n\n#sk #sask #GetVaccinatedSK {tweet_time} google.com'
+         },
+        # blank second string passed in
+        {'first': 'empty second',
+         'second': '',
+         'website': 'google.com',
+         'expect': f'empty second\n\n#sk #sask #GetVaccinatedSK {tweet_time} google.com'
+         },
+        # possible_tweets array hit item 0 - full tweet
+        {'first': '1st Dose: Residents 12 years and older provincially (online and call centre booking available).',
+         'second': '2nd Dose: Residents 65+ or anyone who received their first dose before March 22',
+         'website': 'https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility',
+         'expect': f'1st Dose: Residents 12 years and older provincially (online and call centre booking available).\n\n2nd Dose: Residents 65+ or anyone who received their first dose before March 22\n\n#sk #sask #GetVaccinatedSK {tweet_time} https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility'
+         },
+        # possible_tweets array hit item 1 - short first
+        {'first': '1st Dose: Residents 12 years and older (born on this day in 2009 or earlier) provincially (online and call centre booking available).',
+         'second': '2nd Dose: Residents 65+ or anyone who received their first dose before March 22',
+         'website': 'https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility',
+         'expect': f'1st Dose: Residents 12 years and older (born on this day in 2009 or earlier) provincially \n\n2nd Dose: Residents 65+ or anyone who received their first dose before March 22\n\n#sk #sask #GetVaccinatedSK {tweet_time} https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility'
+         },
+        # possible_tweets array hit item 2 - short first, no hashtags
+        {'first': 'Currently Booking: 1st Dose: Residents 12 years and older (born on this day in 2009 or earlier) provincially (online and call centre booking available).',
+         'second': '2nd Doses Eligibility: Residents 65+ or anyone who received their first dose before March 22, 2021',
+         'website': 'https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility',
+         'expect': f'Currently Booking: 1st Dose: Residents 12 years and older (born on this day in 2009 or earlier) provincially \n\n2nd Doses Eligibility: Residents 65+ or anyone who received their first dose before March 22, 2021\n\n{tweet_time} https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility'
+         },
+        # possible_tweets array hit item 3 - long first, no second
+        {'first': 'Currently Booking: 1st Dose: Residents 12 years and older (born on this day in 2009 or earlier) provincially (online and call centre booking available). This is a long tweet, so second might get bumped.',
+         'second': '2nd Doses Eligibility: Residents 65+ or anyone who received their first dose before March 22, 2021',
+         'website': 'https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility',
+         'expect': f'Currently Booking: 1st Dose: Residents 12 years and older (born on this day in 2009 or earlier) provincially (online and call centre booking available). This is a long tweet, so second might get bumped.\n\n#sk #sask #GetVaccinatedSK {tweet_time} https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility'
+         },
+        # possible_tweets array hit item 4 - long first, no second, no hashtags
+        {'first': 'Currently Booking: 1st Dose: Residents 12 years and older (born on this day in 2009 or earlier) provincially (online and call centre booking available). This is a long tweet, so second might get bumped. It is so long, we might not even get hashtags!?',
+         'second': '2nd Doses Eligibility: Residents 65+ or anyone who received their first dose before March 22, 2021',
+         'website': 'https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility',
+         'expect': f'Currently Booking: 1st Dose: Residents 12 years and older (born on this day in 2009 or earlier) provincially  This is a long tweet, so second might get bumped. It is so long, we might not even get hashtags!?\n\n{tweet_time} https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility'
+         },
+        # possible_tweets array hit item 5 - short first, no second, no hashtags
+        {'first': 'Currently Booking: 1st Dose: Residents 12 years and older (born on this day in 2009 or earlier) provincially (online and call centre booking available). This is a long tweet, so second might get bumped. It is so long, we might not even get hashtags!? Maybe the short version.',
+         'second': '2nd Doses Eligibility: Residents 65+ or anyone who received their first dose before March 22, 2021',
+         'website': 'https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility',
+         'expect': f'Currently Booking: 1st Dose: Residents 12 years and older (born on this day in 2009 or earlier) provincially  This is a long tweet, so second might get bumped. It is so long, we might not even get hashtags!? Maybe the short version.\n\n{tweet_time} https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility'
+         },
+        # possible_tweets - no matches
+        {'first': 'Currently Booking: 1st Dose: Residents 12 years and older (born on this day in 2009 or earlier) provincially (online and call centre booking available). This is a long tweet, so second might get bumped. It is so long, we might not even get hashtags!? Maybe the short version. Nope... it is just too long!?',
+         'second': '2nd Doses Eligibility: Residents 65+ or anyone who received their first dose before March 22, 2021',
+         'website': 'https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility',
+         'expect': None
+         },
     ]
 
     for tweet in tweets:
-        result = main.compose_tweet(tweet['text'], the_time, tweet['website'])
+        result = main.compose_tweet(tweet['first'], tweet['second'], the_time, tweet['website'])
         assert result == tweet['expect'], f'compose_tweet() failed, {result} is not {tweet["expect"]}'
 
 
@@ -174,7 +234,7 @@ def test_should_retweet():
 if __name__ == '__main__':
     print('Running Tests')
     test_get_html()
-    test_get_current_booking()
+    test_get_string_between()
     test_compose_tweet()
     test_should_tweet()
     test_should_retweet()

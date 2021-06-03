@@ -29,31 +29,54 @@ def get_html(url):
         return None
 
 
-def get_current_booking(haystack):
-    header = haystack.find('<h2 id="check-your-eligibility">1. Check Your Eligibility</h2>')
-    if header == -1:
-        log('Error: get_current_booking: header not found, did page html format change?')
+def get_string_between(haystack, start, end, trim):
+    string_start = haystack.find(start)
+    if string_start == -1:
+        log('Error: get_current_booking: start not found, did page html format change?')
         return None
     else:
-        header_to_end = haystack[header:]
-        start = '<blockquote><strong>'
-        end = '</strong></blockquote>'
-        booking_start = header_to_end.find(start)
-        booking_end = header_to_end.find(end)
-        if booking_start == -1 or booking_end == -1:
+        smaller_haystack = haystack[string_start:]
+        string_end = smaller_haystack.find(end)
+        if string_start == -1 or string_end == -1:
             log('Error: get_current_booking: booking not found, did page html format change?')
             return None
         else:
-            booking_text = header_to_end[booking_start + len(start):booking_end]
-            return booking_text
+            string_return = smaller_haystack[trim:string_end]
+            return string_return
 
 
-def compose_tweet(content, tweet_time, website=''):
+def compose_tweet(first, second, tweet_time, website=''):
+    # compose tweet text and ensure it is under 280 characters
+    # note that twitter changes URLs to make them 26 char count always
+    # also we need to use a time stamp, so we don't get flagged a duplicate tweet
+
     hashtags = '#sk #sask #GetVaccinatedSK'
-    the_time = tweet_time.strftime('(%m/%d %I:%M %p CST)')
-    if len(website) > 0:
-        website = f'c/o: {website}'
-    return f'{content} {website} {hashtags} {the_time}'
+    the_time = tweet_time.strftime('%m/%d %I:%M %p CST')
+    short = first.replace('(online and call centre booking available).', '')
+
+    # check if second has content and add line breaks
+    if second is None or second == '':
+        second = ''
+    else:
+        second = f'\n\n{second}'
+
+    # list of possible tweets in order of preference
+    possible_tweets = [
+        f'{first}{second}\n\n{hashtags} {the_time}',
+        f'{short}{second}\n\n{hashtags} {the_time}',
+        f'{short}{second}\n\n{the_time}',
+        f'{first}\n\n{hashtags} {the_time}',
+        f'{first}\n\n{the_time}',
+        f'{short}\n\n{the_time}',
+    ]
+
+    for each_tweet in possible_tweets:
+        #  253 = 280 - 1 space - 26 char URL
+        if len(each_tweet) < 253:
+            return each_tweet + ' ' + website
+
+    print('compose_tweet: all options are over 280 characters')
+    return None
 
 
 def get_previous(file_name='previous.json'):
@@ -74,6 +97,7 @@ def set_previous(data, file_name='previous.json'):
     file.write(json.dumps(write))
     file.close()
     log(f'{file_name} updated: {write}')
+
 
 def get_last_tweet_id(account_name):
     # Default tweet_id of SaskHealth tweet from May 5, 2021
@@ -178,13 +202,14 @@ if __name__ == '__main__':
     load_dotenv()
     while True:
         log('Checking for updates...')
-        vaccine_site = "https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility"
-        html = get_html(vaccine_site)
+        vaccine_website = "https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility"
+        html = get_html(vaccine_website)
         if html is not None:
-            current_booking = get_current_booking(html)
+            current_booking = get_string_between(html, '<blockquote><strong>Currently Booking:', '</strong></blockquote>', 20)
+            second_booking = get_string_between(html, '<h2>2nd Doses Eligibility:', '</h2>', 4)
             if current_booking is not None:
                 if should_tweet(current_booking, get_previous(), datetime.datetime.now()):
-                    tweet = compose_tweet(current_booking, datetime.datetime.now(), vaccine_site)
+                    tweet = compose_tweet(current_booking, second_booking, datetime.datetime.now(), vaccine_website)
                     if tweet is not None:
                         update_status(tweet)
                         set_previous(current_booking)
