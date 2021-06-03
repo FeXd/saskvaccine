@@ -88,10 +88,11 @@ def get_previous(file_name='previous.json'):
     return read_json
 
 
-def set_previous(data, file_name='previous.json'):
+def set_previous(first, second, file_name='previous.json'):
     file = open(file_name, 'w')
     write = {
-        'data': data,
+        'first': first,
+        'second': second,
         'time': datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%SZ')
     }
     file.write(json.dumps(write))
@@ -118,7 +119,7 @@ def set_last_tweet_id(account_name, tweet_id):
     log(f'{file_name} updated: {str(tweet_id)}')
 
 
-def should_tweet(booking_info, previous, current_time):
+def should_tweet(first_info, second_info, previous, current_time):
     # check if there is a change and if we have already tweeted today
     log('should_tweet: should we tweet?')
     if previous == '':
@@ -127,16 +128,16 @@ def should_tweet(booking_info, previous, current_time):
     else:
         previous_time = datetime.datetime.strptime(previous['time'], '%Y-%m-%dT%H:%M:%SZ')
         # is the data different than what we have stored?
-        if booking_info != previous['data']:
-            log(f'should_tweet: data has changed, we should tweet: {booking_info}')
+        if first_info != previous['first'] or second_info != previous['second']:
+            log(f'should_tweet: data has changed, we should tweet: {first_info} {second_info}')
             return True
         # is it after 8:01 AM CST and we haven't tweeted today?
         elif current_time.hour >= 8 and current_time.minute >= 1 and previous_time.day != current_time.day:
-            log(f'should_tweet: later than 8 and have not tweeted today, we should tweet: {booking_info}')
+            log(f'should_tweet: later than 8 and have not tweeted today, we should tweet: {first_info} {second_info}')
             return True
         # we've already tweeted this info
         else:
-            log(f'should_tweet: we already tweeted this data: {booking_info}')
+            log(f'should_tweet: we already tweeted this data: {first_info} {second_info}')
             return False
 
 
@@ -208,11 +209,11 @@ if __name__ == '__main__':
             current_booking = get_string_between(html, '<blockquote><strong>Currently Booking:', '</strong></blockquote>', 20)
             second_booking = get_string_between(html, '<h2>2nd Doses Eligibility:', '</h2>', 4)
             if current_booking is not None:
-                if should_tweet(current_booking, get_previous(), datetime.datetime.now()):
+                if should_tweet(current_booking, second_booking, get_previous(), datetime.datetime.now()):
                     tweet = compose_tweet(current_booking, second_booking, datetime.datetime.now(), vaccine_website)
                     if tweet is not None:
                         update_status(tweet)
-                        set_previous(current_booking)
+                        set_previous(current_booking, second_booking)
                     else:
                         log('Error: main: tweet is None')
                 else:

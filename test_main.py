@@ -139,51 +139,73 @@ def test_compose_tweet():
 def test_should_tweet():
     inputs = [
         {
-            'id': 'different data, same day',
-            'booking_info': 'some booking info goes here',
-            'previous': {'data': 'different', 'time': '2021-04-28T14:33:50Z'},
+            'id': 'both different data, same day',
+            'first_info': 'first booking info goes here',
+            'second_info': 'second booking info goes here',
+            'previous': {'first': '1 different', 'second': '2 different', 'time': '2021-04-28T14:33:50Z'},
             'current_time': '2021-04-28T14:33:50Z',
             'expect': True,
          },
         {
-            'id': 'different data, different day',
-            'booking_info': 'some booking info goes here',
-            'previous': {'data': 'different', 'time': '2021-04-28T14:33:50Z'},
+            'id': 'both different data, different day',
+            'first_info': 'first booking info goes here',
+            'second_info': 'second booking info goes here',
+            'previous': {'first': '1 different', 'second': '2 different', 'time': '2021-04-28T14:33:50Z'},
             'current_time': '2021-05-05T01:00:03Z',
             'expect': True,
         },
         {
-            'id': 'same data, new day, after 8 am',
-            'booking_info': 'Booking information is here 123',
-            'previous': {'data': 'Booking information is here 123', 'time': '2021-04-28T14:33:50Z'},
+            'id': 'first different data, different day',
+            'first_info': 'first booking info goes here',
+            'second_info': 'second booking info goes here',
+            'previous': {'first': '1 different', 'second': 'second booking info goes here', 'time': '2021-04-28T14:33:50Z'},
+            'current_time': '2021-05-05T01:00:03Z',
+            'expect': True,
+        },
+        {
+            'id': 'second different data, different day',
+            'first_info': 'first booking info goes here',
+            'second_info': 'second booking info goes here',
+            'previous': {'first': '1 different', 'second': 'second booking info goes here', 'time': '2021-04-28T14:33:50Z'},
+            'current_time': '2021-05-05T01:00:03Z',
+            'expect': True,
+        },
+        {
+            'id': 'both same data, new day, after 8 am',
+            'first_info': 'Booking information is here 123',
+            'second_info': 'Booking information is here 456',
+            'previous': {'first': 'Booking information is here 123', 'second': 'Booking information is here 456', 'time': '2021-04-28T14:33:50Z'},
             'current_time': '2021-05-30T14:33:50Z',
             'expect': True,
         },
         {
-            'id': 'same data, new day, exactly 8 am',
-            'booking_info': 'Booking information is here 123',
-            'previous': {'data': 'Booking information is here 123', 'time': '2021-04-28T14:33:50Z'},
+            'id': 'both same data, new day, exactly 8 am',
+            'first_info': 'Booking information is here 123',
+            'second_info': 'Booking information is here 456',
+            'previous': {'first': 'Booking information is here 123', 'second': 'Booking information is here 456', 'time': '2021-04-28T14:33:50Z'},
             'current_time': '2021-05-30T08:00:00Z',
             'expect': False,
         },
         {
-            'id': 'same data, new day, before 8 am',
-            'booking_info': 'Booking information is here 123',
-            'previous': {'data': 'Booking information is here 123', 'time': '2021-04-28T14:33:50Z'},
+            'id': 'both same data, new day, before 8 am',
+            'first_info': 'Booking information is here 123',
+            'second_info': 'Booking information is here 456',
+            'previous': {'first': 'Booking information is here 123', 'second': 'Booking information is here 456', 'time': '2021-04-28T14:33:50Z'},
             'current_time': '2021-05-30T07:33:50Z',
             'expect': False,
         },
         {
-            'id': 'same data, same day, after 8 am',
-            'booking_info': 'Booking information is here 123',
-            'previous': {'data': 'Booking information is here 123', 'time': '2021-05-30T07:22:03Z'},
+            'id': 'both same data, same day, after 8 am',
+            'first_info': 'Booking information is here 123',
+            'second_info': 'Booking information is here 456',
+            'previous': {'first': 'Booking information is here 123', 'second': 'Booking information is here 456', 'time': '2021-05-30T07:22:03Z'},
             'current_time': '2021-05-30T07:33:50Z',
             'expect': False,
         },
     ]
 
     for i in inputs:
-        result = main.should_tweet(i['booking_info'], i['previous'], datetime.datetime.strptime(i['current_time'], '%Y-%m-%dT%H:%M:%SZ'))
+        result = main.should_tweet(i['first_info'], i['second_info'], i['previous'], datetime.datetime.strptime(i['current_time'], '%Y-%m-%dT%H:%M:%SZ'))
         assert result == i['expect'], f'should_tweet() failed, {i["id"]}'
 
 
