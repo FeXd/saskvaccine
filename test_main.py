@@ -87,6 +87,48 @@ def test_compose_tweet():
          'website': 'google.com',
          'expect': f'empty second\n\n#sk #sask #GetVaccinatedSK {tweet_time} google.com'
          },
+        # possible_tweets array hit item 0 - full tweet
+        {'first': '1st Dose: Residents 12 years and older provincially (online and call centre booking available).',
+         'second': '2nd Dose: Residents 65+ or anyone who received their first dose before March 22',
+         'website': 'https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility',
+         'expect': f'1st Dose: Residents 12 years and older provincially (online and call centre booking available).\n\n2nd Dose: Residents 65+ or anyone who received their first dose before March 22\n\n#sk #sask #GetVaccinatedSK {tweet_time} https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility'
+         },
+        # possible_tweets array hit item 1 - short first
+        {'first': '1st Dose: Residents 12 years and older (born on this day in 2009 or earlier) provincially (online and call centre booking available).',
+         'second': '2nd Dose: Residents 65+ or anyone who received their first dose before March 22',
+         'website': 'https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility',
+         'expect': f'1st Dose: Residents 12 years and older (born on this day in 2009 or earlier) provincially \n\n2nd Dose: Residents 65+ or anyone who received their first dose before March 22\n\n#sk #sask #GetVaccinatedSK {tweet_time} https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility'
+         },
+        # possible_tweets array hit item 2 - short first, no hashtags
+        {'first': 'Currently Booking: 1st Dose: Residents 12 years and older (born on this day in 2009 or earlier) provincially (online and call centre booking available).',
+         'second': '2nd Doses Eligibility: Residents 65+ or anyone who received their first dose before March 22, 2021',
+         'website': 'https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility',
+         'expect': f'Currently Booking: 1st Dose: Residents 12 years and older (born on this day in 2009 or earlier) provincially \n\n2nd Doses Eligibility: Residents 65+ or anyone who received their first dose before March 22, 2021\n\n{tweet_time} https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility'
+         },
+        # possible_tweets array hit item 3 - long first, no second
+        {'first': 'Currently Booking: 1st Dose: Residents 12 years and older (born on this day in 2009 or earlier) provincially (online and call centre booking available). This is a long tweet, so second might get bumped.',
+         'second': '2nd Doses Eligibility: Residents 65+ or anyone who received their first dose before March 22, 2021',
+         'website': 'https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility',
+         'expect': f'Currently Booking: 1st Dose: Residents 12 years and older (born on this day in 2009 or earlier) provincially (online and call centre booking available). This is a long tweet, so second might get bumped.\n\n#sk #sask #GetVaccinatedSK {tweet_time} https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility'
+         },
+        # possible_tweets array hit item 4 - long first, no second, no hashtags
+        {'first': 'Currently Booking: 1st Dose: Residents 12 years and older (born on this day in 2009 or earlier) provincially (online and call centre booking available). This is a long tweet, so second might get bumped. It is so long, we might not even get hashtags!?',
+         'second': '2nd Doses Eligibility: Residents 65+ or anyone who received their first dose before March 22, 2021',
+         'website': 'https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility',
+         'expect': f'Currently Booking: 1st Dose: Residents 12 years and older (born on this day in 2009 or earlier) provincially  This is a long tweet, so second might get bumped. It is so long, we might not even get hashtags!?\n\n{tweet_time} https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility'
+         },
+        # possible_tweets array hit item 5 - short first, no second, no hashtags
+        {'first': 'Currently Booking: 1st Dose: Residents 12 years and older (born on this day in 2009 or earlier) provincially (online and call centre booking available). This is a long tweet, so second might get bumped. It is so long, we might not even get hashtags!? Maybe the short version.',
+         'second': '2nd Doses Eligibility: Residents 65+ or anyone who received their first dose before March 22, 2021',
+         'website': 'https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility',
+         'expect': f'Currently Booking: 1st Dose: Residents 12 years and older (born on this day in 2009 or earlier) provincially  This is a long tweet, so second might get bumped. It is so long, we might not even get hashtags!? Maybe the short version.\n\n{tweet_time} https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility'
+         },
+        # possible_tweets - no matches
+        {'first': 'Currently Booking: 1st Dose: Residents 12 years and older (born on this day in 2009 or earlier) provincially (online and call centre booking available). This is a long tweet, so second might get bumped. It is so long, we might not even get hashtags!? Maybe the short version. Nope... it is just too long!?',
+         'second': '2nd Doses Eligibility: Residents 65+ or anyone who received their first dose before March 22, 2021',
+         'website': 'https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus/covid-19-vaccine/vaccine-booking#check-your-eligibility',
+         'expect': None
+         },
     ]
 
     for tweet in tweets:
