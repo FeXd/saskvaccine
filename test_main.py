@@ -246,6 +246,8 @@ def test_should_retweet():
         {'expect': False, 'tweet': '#Regina and area...\nThe drive-thru vaccination site at Evraz Place is now closed to new vehicles in line (as of 3:30 pm June 2). Everyone already in line will receive their vaccine today. \nThe site will reopen tomorrow at 8:30am. Thank you for your patience.'},
         {'expect': False, 'tweet': 'If you are trying to get pregnant, are pregnant, or are a new mom, you likely have lots of questions including questions about the COVID-19 vaccine. Here are the facts… Speak to your healthcare provider if you have questions.'},
         {'expect': False, 'tweet': 'A special youth (12-17) walk-in COVID-19 vaccination clinic will be held at Prairieland Park in #Saskatoon June 2, 4 & 5 from noon to 8pm offering Pfizer. Enter via Ruth Street. Bring your Saskatchewan Health Card and wear a mask.'},
+        {'expect': True, 'tweet': 'Saskatchewan residents 60+ or anyone who received their first dose before March 29, 2021 are now eligible to book their second dose of the #COVID19SK vaccination. \n\nBook online: http://StickItToCOVID.ca\n\nOr by phone: 1-833-SASK-VAX (1-833-727-5829)'},
+        {'expect': True, 'tweet': '#COVID19SK for June 6: 800,772 Vaccines Administered, 73 New Cases, 119 Recoveries, No New Deaths, 101 in Hospital.\n\n7-Day Average:  103 (8.4 per 100,000)\n\nVaccine eligibility\n\n1st Dose: 12+\n\n2nd Dose: 65+\n\nDashboard: https://dashboard.saskatchewan.ca/health-wellness\n\nFull Release: https://saskatchewan.ca/government/news-and-media/2021/june/06/covid19-update-for-june-6-800772-vaccines-administered-73-new-cases-119-recoveries-no-new-deaths'},
     ]
 
     for i in inputs:
