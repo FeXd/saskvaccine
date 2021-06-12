@@ -201,6 +201,20 @@ def should_retweet(tweet_text):
     return False
 
 
+def clean_string(dirty):
+    strip = [
+        '<strong>',
+        '</strong>',
+        '<span style="font-size: 36px;">',
+        '</span>',
+        '&nbsp;',
+    ]
+    clean = dirty
+    for item in strip:
+        clean = clean.replace(item, '')
+    return clean
+
+
 if __name__ == '__main__':
     log('Sask Vaccine Bot is now running...')
     load_dotenv()
@@ -211,7 +225,12 @@ if __name__ == '__main__':
         if html is not None:
             current_booking = get_string_between(html, '<blockquote><strong>Currently Booking:', '</strong></blockquote>', 20)
             second_booking = get_string_between(html, '<h2>2nd Doses Eligibility:', '</h2>', 4)
+
+            if current_booking is None and second_booking is None:
+                current_booking = get_string_between(html, '<span style="font-size: 36px;">Currently Booking Online:', '</strong></span>', 31)
+
             if current_booking is not None:
+                current_booking = clean_string(current_booking)
                 if should_tweet(current_booking, second_booking, get_previous(), datetime.datetime.now()):
                     tweet = compose_tweet(current_booking, second_booking, datetime.datetime.now(), vaccine_website)
                     if tweet is not None:

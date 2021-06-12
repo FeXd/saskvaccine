@@ -21,7 +21,7 @@ def test_get_html():
         assert main.get_html(failure_url) is None, f'get_html({failure_url}) should return None'
 
 
-def test_get_string_between():
+def test_get_string_between_old():
     start = '<blockquote><strong>Currently Booking:'
     end = '</strong></blockquote>'
     trim = 20
@@ -52,8 +52,23 @@ def test_get_string_between():
          'booking': 'Currently Booking: Residents 42 years and older (born on this day in 1979 or earlier) provincially (online and call centre booking available)'},
         {'file': 'test_data/20210519vaccine.html',
          'booking': 'Currently Booking: 1st Dose: Residents 16 years and older (born on this day in 2005 or earlier) provincially (online and call centre booking available). '},
-        # {'file': 'test_data/20210525vaccine.html',
-        #  'booking': 'testing'},
+    ]
+
+    for test in tests:
+        file = open(test['file'], "r")
+        read = file.read().strip()
+        file.close()
+        result = main.get_string_between(read, start, end, trim)
+        assert result == test['booking'], f'get_string_between() failed on {test["file"]}, "{result}" does not equal "{test["booking"]}"'
+
+
+def test_get_string_between():
+    start = '<span style="font-size: 36px;">Currently Booking Online:'
+    end = '</strong></span>'
+    trim = 31
+    tests = [
+        {'file': 'test_data/20210612vaccine.html',
+         'booking': 'Currently Booking Online: <strong>1st dose: Residents 12 years and older (<strong>born on this day in 2009 or earlier</strong>).&nbsp; 2nd dose: Residents 55 years and older, or anyone who received their first dose before April 7, 2021'},
     ]
 
     for test in tests:
@@ -257,10 +272,25 @@ def test_should_retweet():
         assert result == i['expect'], f'should_retweet() failed, should have been {i["expect"]}, tweet: {i["tweet"]} '
 
 
+def test_clean_string():
+    inputs = [
+        {
+            'input': 'Currently Booking Online: <strong>1st dose: Residents 12 years and older (<strong>born on this day in 2009 or earlier</strong>).&nbsp; 2nd dose: Residents 55 years and older, or anyone who received their first dose before April 7, 2021',
+            'expect': 'Currently Booking Online: 1st dose: Residents 12 years and older (born on this day in 2009 or earlier). 2nd dose: Residents 55 years and older, or anyone who received their first dose before April 7, 2021',
+        },
+    ]
+
+    for i in inputs:
+        result = main.clean_string(i['input'])
+        assert result == i['expect'], f'clean_string() failed, should have been {i["expect"]}, input: {i["input"]} '
+
+
 if __name__ == '__main__':
     print('Running Tests')
     test_get_html()
     test_get_string_between()
+    test_get_string_between_old()
+    test_clean_string()
     test_compose_tweet()
     test_should_tweet()
     test_should_retweet()
