@@ -190,6 +190,7 @@ def should_retweet(tweet_text):
         '2nd dose:',
         'drops to',
         'no changes',
+        'moving down',
     ]
 
     for must_have in must_have_one:

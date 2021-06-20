@@ -267,6 +267,7 @@ def test_should_retweet():
         {'expect': False, 'tweet': 'Get your AstraZeneca second dose today! If you are eligible, visit the AstraZeneca drive-thru clinic in one of these communities right now:\nYellow circle Regina: 8:30 am–7:30pm\nYellow circle Saskatoon: 8:30am–4pm\nYellow circle Kindersley: 10am–3pm\nYellow circle North Battleford: 9:30 am–5pm'},
         {'expect': True, 'tweet': 'COVID-19 Immunization Update Effective June 14: Second Dose Eligibility Drops to 50+; Second Dose Eligibility for Residents of NSAD Drops to 18+ \n\nAll residents 12 and older are eligible for their first dose right now. \n\nRead the entire release here: http://saskhealthauthority.ca/news/releases/…'},
         {'expect': True, 'tweet': 'COVID-19 Immunization Update Effective June 11: NO changes to age eligibility.\n\nRead more on the Saskatchewan Health Authority website: https://saskhealthauthority.ca/news/releases/Pages/2021/June/COVID-19-Immunization-Update-Effective-June-11.aspx'},
+        {'expect': True, 'tweet': "We are quickly moving down age eligibility for 2nd doses. The vaccination program for 2nd doses is based on your age or when you received your 1st dose. When you're eligible, don’t wait. Book your 2nd dose and finish the fight! Visit http://stickittocovid.ca for more info."},
     ]
 
     for i in inputs:
