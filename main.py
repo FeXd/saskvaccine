@@ -175,7 +175,7 @@ def check_tweets():
 
 def should_retweet(tweet_text):
     log('should_retweet: should we retweet?')
-    must_have_one = ['eligib', 'immuniz']
+    must_have_one = ['eligib', 'immuniz', 'stickittocovid.ca']
     should_have_one = [
         'are now',
         'is now',
@@ -188,6 +188,12 @@ def should_retweet(tweet_text):
         'remain unchanged',
         '1st dose:',
         '2nd dose:',
+        'drops to',
+        'no changes',
+        'moving down',
+        'can receive',
+        'are open to',
+        'opens to',
     ]
 
     for must_have in must_have_one:
