@@ -178,6 +178,7 @@ def should_retweet(tweet_text):
     must_have_one = ['eligib', 'immuniz', 'stickittocovid.ca']
     should_have_one = [
         'are now',
+        "you're now",
         'is now',
         'moves to',
         'as of',
