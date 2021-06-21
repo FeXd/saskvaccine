@@ -32,13 +32,13 @@ def get_html(url):
 def get_string_between(haystack, start, end, trim):
     string_start = haystack.find(start)
     if string_start == -1:
-        log('Error: get_current_booking: start not found, did page html format change?')
+        log('Error: get_current_booking: start not found, did page html format change?', start)
         return None
     else:
         smaller_haystack = haystack[string_start:]
         string_end = smaller_haystack.find(end)
         if string_start == -1 or string_end == -1:
-            log('Error: get_current_booking: booking not found, did page html format change?')
+            log('Error: get_current_booking: booking not found, did page html format change?', start)
             return None
         else:
             string_return = smaller_haystack[trim:string_end]

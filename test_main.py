@@ -69,6 +69,8 @@ def test_get_string_between():
     tests = [
         {'file': 'test_data/20210612vaccine.html',
          'booking': 'Currently Booking Online: <strong>1st dose: Residents 12 years and older (<strong>born on this day in 2009 or earlier</strong>).&nbsp; 2nd dose: Residents 55 years and older, or anyone who received their first dose before April 7, 2021'},
+        {'file': 'test_data/20210620vaccine.html',
+         'booking': 'Currently Booking Online: <strong>1st dose: Residents 12 years and older (<strong>born on this day in 2009 or earlier</strong>).&nbsp; 2nd dose: Residents 45 years and older, or anyone who received their first dose before May 1, 2021'},
     ]
 
     for test in tests:
