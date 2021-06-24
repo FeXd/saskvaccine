@@ -1,3 +1,8 @@
+# No Longer Active
+As of June 24, 2021 **residents aged 12+ are elligible for 1st & 2nd dose of #COVID19SK vaccine**. This bot will stop tweeting until more information is released about residents under 12.
+
+This repo may have some code cleanup done so it is easier to fork, but should be **considered inactive**.
+
 # Sask Vaccine Bot
 🤖 Bot to track COVID-19 vaccine age eligibility in #SK  
 ⏰ Tweets when info changes & every morning around 8 am  
