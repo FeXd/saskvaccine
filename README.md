@@ -3,6 +3,8 @@ As of June 24, 2021 **residents aged 12+ are elligible for 1st & 2nd dose of #CO
 
 This repo may have some code cleanup done so it is easier to fork, but should be **considered inactive**.
 
+According to [Twitter Analytics](https://analytics.twitter.com/) between April 28 and June 24, 2021 (58 day period) [@saskvaccine](https://twitter.com/saskvaccine) earned 25.4K impressions (439 impressions per day) and had a maximum of 148 followers. Detailed analytics are available in [./tweet_activity](https://github.com/FeXd/saskvaccine/tree/main/tweet_activity) in _.csv_ format.  
+
 # Sask Vaccine Bot
 🤖 Bot to track COVID-19 vaccine age eligibility in #SK  
 ⏰ Tweets when info changes & every morning around 8 am  
